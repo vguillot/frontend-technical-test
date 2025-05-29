@@ -43,7 +43,12 @@ export const LoginPage: React.FC = () => {
       authenticate(jwt);
     }
   });
-  const { register, handleSubmit } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     mutate(data);
   };

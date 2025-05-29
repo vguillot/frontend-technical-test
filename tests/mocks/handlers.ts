@@ -1,4 +1,5 @@
 import { http, HttpResponse } from "msw";
+import { mockToken } from "./token";
 
 const users = {
   dummy_user_id_1: {
@@ -64,7 +65,7 @@ export const handlers = [
       const { username, password } = await request.json();
       if (username === "valid_user" && password === "password") {
         return HttpResponse.json({
-          jwt: "dummy_token",
+          jwt: mockToken,
         });
       }
       if (username === "error_user") {
@@ -108,5 +109,24 @@ export const handlers = [
         results: memeComments,
       });
     },
+  ),
+  http.post<{ id: string }, { content: string }>(
+    "https://fetestapi.int.mozzaik365.net/api/memes/:id/comments",
+    async ({ params, request }) => {
+      const { content } = await request.json();
+      const newComment = {
+        id: `temp-${Date.now()}`,
+        memeId: params.id,
+        authorId: "dummy_user_id",
+        content,
+        createdAt: new Date().toISOString(),
+      };
+  
+      comments.push(newComment);
+  
+      return HttpResponse.json(newComment, {
+        status: 201,
+      });
+    }
   ),
 ];

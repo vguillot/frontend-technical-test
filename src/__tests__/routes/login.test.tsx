@@ -1,14 +1,13 @@
-import { vi } from "vitest";
-import { act, fireEvent, waitFor, screen } from "@testing-library/react";
-import { renderWithRouter } from "../utils";
-import { LoginPage } from "../../routes/login";
-import {
-  AuthenticationContext,
-  AuthenticationState,
-} from "../../contexts/authentication";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ChakraProvider } from "@chakra-ui/react";
-import { ListenerFn, RouterEvents } from "@tanstack/react-router";
+import { ChakraProvider } from '@chakra-ui/react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ListenerFn, RouterEvents } from '@tanstack/react-router';
+import { act, fireEvent, screen, waitFor } from '@testing-library/react';
+import { vi } from 'vitest';
+
+import { mockToken } from '../../../tests/mocks/token';
+import { AuthenticationContext, AuthenticationState } from '../../contexts/authentication';
+import { LoginPage } from '../../routes/login';
+import { renderWithRouter } from '../utils';
 
 type RenderLoginPageParams = {
   authenticate?: (token: string) => void;
@@ -62,7 +61,7 @@ describe("routes/login", () => {
       });
 
       await waitFor(() => {
-        expect(authenticateMock).toHaveBeenCalledWith("dummy_token");
+        expect(authenticateMock).toHaveBeenCalledWith(mockToken);
       });
     });
 
@@ -109,7 +108,7 @@ describe("routes/login", () => {
       renderLoginPage({
         authState: {
           isAuthenticated: true,
-          token: "dummy_token",
+          token: mockToken,
           userId: "dummy_user_id",
         },
         onNavigate: onBeforeNavigateMock,
@@ -129,7 +128,7 @@ describe("routes/login", () => {
       renderLoginPage({
         authState: {
           isAuthenticated: true,
-          token: "dummy_token",
+          token: mockToken,
           userId: "dummy_user_id",
         },
         onNavigate: onBeforeNavigateMock,
